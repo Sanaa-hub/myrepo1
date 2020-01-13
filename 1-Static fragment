@@ -1,0 +1,39 @@
+//public View onCreateView --> only this method needs to remain in java class and remove all
+
+  <!--MAIN ACTIVITY INSIDE relative layout-->
+
+  <fragment
+        android:name="com.example.fragment.fragment1"
+        android:id="@+id/f1"
+        android:layout_width="410dp"
+        android:layout_height="250dp"
+        />
+
+    <fragment
+        android:name="com.example.fragment.fragment2"
+        android:id="@+id/f2"
+        android:layout_width="410dp"
+        android:layout_height="250dp"
+        android:layout_below="@id/f1"
+        android:layout_marginTop="30dp" />
+
+  <!--Inside fragment 1,, firstly change the background color #0c1c41-->
+
+ <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="hello from fragment 1"
+        android:textColor="#FFFFFF"
+        android:textSize="50px"
+        android:textAlignment="center" />
+
+ <!--Inside fragment 1,, firstly change the background color "@color/colorPrimaryDark"-->
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="hello from fragment 2"
+        android:textColor="#FFFFFF"
+        android:textSize="50px"
+        android:textAlignment="center" />
+

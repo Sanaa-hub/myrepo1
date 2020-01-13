@@ -1,0 +1,39 @@
+//comment out all in main activity XML and in java main, paste this
+
+package com.example.myfragments;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
+import android.os.Bundle;
+import android.view.Display;
+import android.view.WindowManager;
+
+public class MainActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction t = fm.beginTransaction();
+        WindowManager wm =getWindowManager();
+        Display d = wm.getDefaultDisplay();
+
+        if (d.getWidth()> d.getHeight())
+        {
+            fragmentA f1 = new fragmentA();
+            t.replace(android.R.id.content,f1);
+        }
+
+        else {
+            fragmentB f2= new fragmentB();
+            t.replace(android.R.id.content,f2);
+        }
+
+        t.commit();
+    }
+}
+

@@ -1,0 +1,178 @@
+//frag1
+package com.example.fragmentscommunication;
+
+import android.content.Context;
+import android.net.Uri;
+import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+
+public class frag1 extends Fragment {
+
+    EditText editText;
+    Button button;
+    private OnFragmentAInteractionListener mListener;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View v = inflater.inflate(R.layout.fragment_frag1, container, false);
+        //2
+
+        editText = v.findViewById(R.id.et1);
+        button = v.findViewById(R.id.btn);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CharSequence input = editText.getText();
+                mListener.onInputASent(input);
+            }
+        });
+
+        return v;
+    }
+
+    public void updateEditText(CharSequence newText) {
+        editText.setText(newText);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentAInteractionListener) {
+            mListener = (OnFragmentAInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+
+    public interface OnFragmentAInteractionListener {
+       //1
+        void onInputASent(CharSequence input);
+    }
+}
+
+
+--------------------------------------------------------------------
+
+//frag2
+
+package com.example.fragmentscommunication;
+
+import android.content.Context;
+import android.net.Uri;
+import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+
+public class frag2 extends Fragment {
+
+    private OnFragmentBInteractionListener mListener;
+    EditText editText;
+    Button button;
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View v= inflater.inflate(R.layout.fragment_frag2, container, false);
+
+        editText=v.findViewById(R.id.et1);
+        button = v.findViewById(R.id.btn);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CharSequence input = editText.getText();
+                mListener.onInputBSent(input);
+            }
+        });
+
+        return v;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentBInteractionListener) {
+            mListener = (OnFragmentBInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+    public void updateEditText(CharSequence newText) {
+        editText.setText(newText);
+    }
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+    public interface OnFragmentBInteractionListener {
+        void onInputBSent(CharSequence input);
+    }
+}
+
+
+-----------------------------------------------------------------------
+//main activity
+
+package com.example.fragmentscommunication;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+
+public class MainActivity extends AppCompatActivity implements frag1.OnFragmentAInteractionListener, frag2.OnFragmentBInteractionListener {
+
+    private frag1 f1;
+    private frag2 f2;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        f1 = new frag1();
+        f2 = new frag2();
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container_a, f1)
+                .replace(R.id.container_b, f2)
+                .commit();
+
+
+    }
+
+    public void onInputASent(CharSequence input) {
+        f2.updateEditText(input);
+    }
+
+
+    public void onInputBSent(CharSequence input) {
+        f1.updateEditText(input);
+    }
+}
+
